@@ -2,6 +2,10 @@ extends Node2D
 var CurrnetTurn:int = 1 # 1 means player turn and 0 means Ai turn  
 var board:=[]
 var Heads=[0,0,0,0,0,0,0]
+var X_BASE=292
+var Y_BASE=50
+var X_differ=80
+const Textures=['res://Assets/images/coinDiamond.png','res://Assets/images/coinGold.png']
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for row in range(6):
@@ -16,7 +20,11 @@ func _process(delta: float) -> void:
 	pass
 	
 func add_coins(column,turn):
-	pass
+	var coin=preload('res://Coins.tscn').instantiate()
+	coin.set_Sprite_texture(Textures[turn])
+	coin.position=Vector2(X_BASE +column*X_differ,Y_BASE)
+	add_child(coin)
+	
 func check_game_status():
 	pass
 func update_board(col:int,turn:int):
@@ -32,6 +40,7 @@ func print_board():
 func handle_mouse_event(event:InputEvent,col:int) -> void :
 	if event is InputEventMouseButton and event.pressed:
 		update_board(col,CurrnetTurn)
+		add_coins(col,CurrnetTurn)
 		check_game_status() #
 		CurrnetTurn=(CurrnetTurn+1)%2 # we resest the turn with this expression
 		print_board()
