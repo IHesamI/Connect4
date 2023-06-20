@@ -1,12 +1,19 @@
 extends Node2D
+
 var CurrnetTurn:int = 1 # 1 means player turn and 0 means Ai turn  
+
 var board:=[]
 var Heads=[0,0,0,0,0,0,0]
+
 var X_BASE=292
+var X_differ=79
+
 var Y_BASE=50
-var X_differ=80
-const Textures=['res://Assets/images/coinDiamond.png','res://Assets/images/coinGold.png']
+
+const Textures=['res://Assets/images/coinDiamond.png'
+			   ,'res://Assets/images/coinGold.png']
 # Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
 	for row in range(6):
 		var rowArr:=[]
@@ -18,33 +25,49 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
-	
+
 func add_coins(column,turn):
 	var coin=preload('res://Coins.tscn').instantiate()
 	coin.set_Sprite_texture(Textures[turn])
 	coin.position=Vector2(X_BASE +column*X_differ,Y_BASE)
 	add_child(coin)
-	
+
+
+func wining_check(board):
+	for row in range(6):
+		for column in range(4):
+			if board[row][column]== board[row][column+1] and board[row][column]==board[row][column+2] and board[row][column]==board[row][column+3] and board[row][column]!=-1:
+				return board[row][column] 
+
+	for column in range(7):
+		for row in range(3):
+			if board[row][column]== board[row+1][column] and board[row][column]==board[row+2][column] and board[row][column]==board[row+3][column] and board[row][column]!=-1:
+				return board[row][column] 
+	return -1
+
 func check_game_status():
-	pass
+	var is_win=wining_check(board)
+	if is_win!=-1:
+		return is_win
+	for head in Heads:
+		if head !=6:
+			return -1 		
+	return 2 # when the board is full and no one wins
 func update_board(col:int,turn:int):
 	var col_head=Heads[col]
 	Heads[col]+=1
 	board[col_head][col]=turn
-	
-func print_board():
-	print('[')
-	for row in board:
-		print(row)
-	print(']')
+
+func board_actions(col):
+	update_board(col,CurrnetTurn)
+	add_coins(col,CurrnetTurn)
+	#print(check_game_status()) #
+	CurrnetTurn=(CurrnetTurn+1)%2 # resests the turn with this expression	
+
 func handle_mouse_event(event:InputEvent,col:int) -> void :
-	if event is InputEventMouseButton and event.pressed:
-		update_board(col,CurrnetTurn)
-		add_coins(col,CurrnetTurn)
-		check_game_status() #
-		CurrnetTurn=(CurrnetTurn+1)%2 # we resest the turn with this expression
-		print_board()
-		#print(board.size())
+	if event is InputEventMouseButton and event.pressed and CurrnetTurn==1:
+		board_actions(col)
+		Agent_turn()
 		
 
 		

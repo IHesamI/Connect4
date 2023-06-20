@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://bxr71k51wg4ir"]
+[gd_scene load_steps=7 format=3 uid="uid://bxr71k51wg4ir"]
 
 [ext_resource type="Texture2D" uid="uid://c1l5bjpftrt4v" path="res://Assets/images/circle-removebg-preview (1).png" id="1_2li78"]
-[ext_resource type="PackedScene" uid="uid://gagc23qdkjh2" path="res://Coins.tscn" id="1_dxuci"]
 [ext_resource type="Script" path="res://Board.gd" id="1_saryn"]
 [ext_resource type="Texture2D" uid="uid://ba2mh1okpjwvr" path="res://Assets/images/new.png" id="2_4j10i"]
 
@@ -4914,9 +4913,6 @@ sources/5 = SubResource("TileSetAtlasSource_s3rd2")
 [node name="Board" type="Node2D"]
 script = ExtResource("1_saryn")
 
-[node name="Coin" parent="." instance=ExtResource("1_dxuci")]
-position = Vector2(292, 122)
-
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_teukt")
 format = 2
@@ -4945,7 +4941,7 @@ anchors_preset = 0
 offset_left = 338.0
 offset_top = 89.0
 offset_right = 405.0
-offset_bottom = 507.0
+offset_bottom = 503.0
 
 [node name="Col3" type="Control" parent="."]
 layout_mode = 3
