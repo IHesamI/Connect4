@@ -4983,6 +4983,8 @@ offset_top = 90.0
 offset_right = 802.0
 offset_bottom = 505.0
 
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="gui_input" from="Col1" to="." method="_on_col_1_gui_input"]
 [connection signal="gui_input" from="Col2" to="." method="_on_col_2_gui_input"]
 [connection signal="gui_input" from="Col3" to="." method="_on_col_3_gui_input"]
