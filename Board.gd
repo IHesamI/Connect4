@@ -16,17 +16,35 @@ func _ready() -> void:
 			rowArr.append(0)
 		init_state.append(rowArr)
 	Agent=Ai.new(init_state)
-
+	Agent.Game_OVER.connect(_on_game_over)
+func _on_game_over(message:String):
+	$MSG.text=message
+	set_process(false)
 func _process(delta: float) -> void:
 	pass
 
 func add_coins(column,turn):
 	var coin=preload('res://Coins.tscn').instantiate()
 	coin.set_Sprite_texture(Textures[turn])
-	print(Textures[turn])
 	coin.position=Vector2(X_BASE +column*X_differ,Y_BASE)
 	add_child(coin)
+	check_for_game_over_state()
+func check_for_game_over_state():
+	var score_and_wining=Agent.wining_check(Agent.Main_Node.state)
+	if score_and_wining[0]:
+		if score_and_wining[1]>0:
+			Agent.emit_signal('Game_OVER','YOU LOSE')
+		else:
+			Agent.emit_signal('Game_OVER','YOU Win')
+	if is_Draw(Agent.Main_Node.state):
+		Agent.emit_signal('Game_OVER','Draw')
 
+func is_Draw(state:Array):
+	for row in state:
+		for column in row:
+			if column !=0:
+				return false
+	return true	
 func board_actions(col):
 	Agent.update_board(col,Agent.CurrnetTurn)
 	add_coins(col,Agent.CurrnetTurn)
